@@ -28,6 +28,7 @@ app.permanent_session_lifetime = timedelta(days=SESSION_DAYS)
 # ルートページのリダイレクト処理
 @app.route('/', methods=['GET'])
 def index():
+    logout()
     uid = session.get('uid')
     if uid is None:
         return redirect(url_for('login_view'))
