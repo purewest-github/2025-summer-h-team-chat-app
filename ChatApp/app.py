@@ -65,9 +65,7 @@ def register_process():
         else:
             User.create(uid, name, email, password)
             UserId = str(uid)
-            session.permanent = True
             session['uid'] = UserId
-            print(f'register_process: Setting session uid={UserId}')
             return redirect(url_for('categories_view'))
     return redirect(url_for('register_view'))
 
@@ -95,9 +93,7 @@ def login_process():
             if hashPassword != user["password"]:
                 flash('パスワードが間違っています！')
             else:
-                session.permanent = True
                 session['uid'] = user["id"]
-                print(f'login_process: Setting session uid={user["id"]}')
                 return redirect(url_for('categories_view'))
     return redirect(url_for('login_view'))
 
@@ -107,13 +103,6 @@ def login_process():
 def logout():
     session.clear()
     return redirect(url_for('login_view'))
-
-
-# デバッグ用：セッションクリア（開発時のみ使用）
-@app.route('/clear_session', methods=['GET'])
-def clear_session():
-    session.clear()
-    return "セッションがクリアされました。<a href='/'>ホームに戻る</a>"
 
 
 # カテゴリ画面表示
@@ -173,8 +162,9 @@ def spots_view(pid):
     # カテゴリーと都道府県の両方でフィルタリング
     spots = Spot.find_by_cid_and_pid(cid, pid)
     prefecture = Prefecture.find_by_pid(pid)
+    category = Category.find_by_cid(cid)
     
-    return render_template('auth/spot_id.html', spots=spots, prefecture=prefecture)  
+    return render_template('auth/spot_id.html', spots=spots, prefecture=prefecture, category=category)  
 # """
 
 # スポット作成ページの表示

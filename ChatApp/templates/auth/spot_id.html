@@ -6,9 +6,9 @@
         <!-- <a class="spot_text" href="prefectures_view">＜海</a> -->
         <!-- <a class="spot_text" href="prefectures_view "></a> -->
         <h1>
-          {% for spot in spots %}
-            <h3>{{ spot_id }} </h3>
-          {% endfor %}
+          {% if prefecture %}
+            <h3>{{ prefecture.prefecture_name }}&lt;{{ category.category_name }}&gt;の釣りスポット</h3>
+          {% endif %}
           <!-- <li>spots.pid</li>  どうやって都道府県の文字を動的に表示させれば良いか質問する！！！--> 
         </h1>
         <!-- <a class="spot_text" href="categorias_view">HOME</a> -->
