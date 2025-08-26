@@ -1,23 +1,12 @@
-<!DOCTYPE html>
-<html lang="ja">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="../../static/css/auth.css" />
-        <link rel="stylesheet" href="../../static/css/information.css" />
-    </head>
-    <body>
-<!--{% extends 'auth/base.html' %}
-{% block titile %}-->
-        <title>information</title>
-
-<!--{% endblock %}
-{% block body %}-->
+{% extends 'auth/base.html' %}
+{% block title %}
+<title>information</title>
+{% endblock %}
+{% block body %}
         <div class="wrapper">
             <form method="post">
                 <header class="auth-header">
-                    <a class="information_back"  href="categorise_view">＜戻る</a>
+                    <a class="information_back" href="{{ url_for('categories_view') }}">＜戻る</a>
                     <h3>アカウント</h3>
                     <img class="logo" src="../../static/img/logo.png"/>
                 </header>
@@ -27,7 +16,7 @@
                 <div class="information">
                     <div>
                         <h4 class="information_name">アカウント名</h4>
-                        <p>現在</p>
+                        <p>現在: {{ user.name }}</p>
                         <label for="new_name_input" class="information_text">新規
                         <input class="information_form"
                         type="text"
@@ -37,7 +26,7 @@
                     </div>
                     <div>
                         <h4 class="information_name">メールアドレス</h4>
-                        <P>現在</P>
+                        <p>現在: {{ user.email }}</p>
                         <label for="new_email_input" class="information_text">新規
                         <input class="information_form"
                         type="text"
@@ -45,18 +34,14 @@
                         name="email"
                         id="new_email_input"></label>
                     </div>
-                    <div>
-                        <input class="information_form"
-                        type="password"
-                        placeholder="パスワードを入力してください"
-                        name="password">
-                    </div>
                     <input type="submit" value="変更" class="information_button">
                 </div> 
                 <div class="information">   
                     <div>
                         <h4 class="information_name">パスワード変更</h4>
+                        {# ここはセキュリティ上、表示しない方が良いかも
                         <p>現在</p>
+                        #}
                         <label for="new_password_input" class="information_text">新規
                         <input class="information_form"
                         type="password"
@@ -76,6 +61,4 @@
                 </div>    
             </form>
         </div>
-    </body>
-<!--{% endblock %}-->
-</html>
+{% endblock %}

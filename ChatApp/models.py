@@ -135,6 +135,21 @@ class Spot:
             db_pool.release(conn)
 
     @classmethod
+    def find_by_cid_and_pid(cls, cid, pid):
+        conn = db_pool.get_conn()
+        try:
+            with conn.cursor() as cur:
+                sql = "SELECT * FROM spots WHERE cid=%s AND pid=%s;"
+                cur.execute(sql, (cid, pid))
+                spots = cur.fetchall()
+                return spots
+        except pymysql.Error as e:
+            print(f'エラーが発生しています:{e}')
+            abort(500)
+        finally:
+            db_pool.release(conn)
+
+    @classmethod
     def update(cls, cid, pid, new_spot_name, sid):
         conn = db_pool.get_conn()
         try:

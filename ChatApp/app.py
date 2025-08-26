@@ -164,8 +164,16 @@ def spots_view(pid):
     if uid is None:
         return redirect(url_for('login_view'))
     
-    spots = Spot.find_by_pid(pid)
+    # セッションからカテゴリーIDを取得
+    cid = session.get('cid')
+    if cid is None:
+        flash('カテゴリーが選択されていません')
+        return redirect(url_for('categories_view'))
+    
+    # カテゴリーと都道府県の両方でフィルタリング
+    spots = Spot.find_by_cid_and_pid(cid, pid)
     prefecture = Prefecture.find_by_pid(pid)
+    
     return render_template('auth/spot_id.html', spots=spots, prefecture=prefecture)  
 # """
 
@@ -294,7 +302,14 @@ def information_view():
     uid = session.get('uid')
     if uid is None:
         return redirect(url_for('login_view'))
-    return render_template('/auth/information.html')
+    
+    # 現在のユーザー情報を取得
+    user = User.find_by_id(uid)
+    if user is None:
+        flash('ユーザー情報が見つかりません')
+        return redirect(url_for('login_view'))
+    
+    return render_template('auth/information.html', user=user)
 
 # # パスワード変更                                                            #←ここ確認
 # @app.route('/information', methods=['POST'])
