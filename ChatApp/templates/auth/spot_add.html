@@ -1,0 +1,43 @@
+{% extends 'auth/base.html' %}
+{% block title %}
+<title>新規釣りスポット追加</title>
+{% endblock %}
+{% block body %}
+<div class="wrapper">
+        <div class="close_window">
+            <a href="{{ url_for('spots_view', pid=pid) }}">戻る</a>
+        </div> 
+        <h1>新規釣りスポット追加</h1>
+        {% if prefecture %}
+            <p>{{ prefecture.prefecture_name }}の釣りスポットを追加</p>
+        {% endif %}
+        
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for message in messages %}
+                        <div class="flash-message">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+    <!-- 釣りスポットを新しく追加 -->
+    <form method="POST" action="{{ url_for('create_spot', pid=pid) }}">
+        <label for="spot-room-input" class="auth-password">釣りスポット名</label><br>
+        <input class="auth-text"
+            type="text"
+            placeholder="釣りスポット名を入力"
+            name="spot_name"
+            id="spot-room-input"
+            required
+        />
+        <button type="submit" class="auth-button">追加</button>
+    </form>
+
+
+
+
+
+</div>
+{% endblock %}

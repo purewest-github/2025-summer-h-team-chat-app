@@ -14,16 +14,28 @@
         <!-- <a class="spot_text" href="categorias_view">HOME</a> -->
         <a class="spot_text" href="{{ url_for('categories_view') }}">HOME</a>
     </header>
+    
+    <!-- フラッシュメッセージの表示 -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    
     <!-- スポット追加「＋」 -->
      <div class="add_spot">
-        <a class="add_spot" href="add_spot_room">＋</a>
+        <a class="add_spot" href="{{ url_for('add_spot_view', pid=prefecture.id) }}">＋</a>
      </div>
     <!-- スポット一覧を表示 -->
      <div class="spot_section">
         <ul class="spot_list">
           {% for spot in spots %}
             <li>
-              <a href="">{{ spot.spot_name }}</a>
+              <a href="{{ url_for('spot_room_view', sid=spot.id) }}">{{ spot.spot_name }}</a>
             </li>
           {% endfor %}
         </ul>

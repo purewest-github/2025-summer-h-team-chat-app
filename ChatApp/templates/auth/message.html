@@ -1,64 +1,39 @@
-{% extends 'base.html' %} {% block title %}
+{% extends 'auth/base.html' %}
+{% block title %}
 <title>message</title>
-{% endblock %} {% block body %}        
+{% endblock %}
+{% block body %}        
         <div class="message_room">
-            <form action="{{ url_for('spot_room_view', sid )}}" method="GET">
-                <header class="auth-header">
-                    {% if messages.uid == uid and messages.sid == sid %}
-                    <a  class="back" href="spots_view">＜</a>
-                    {% for prefectures in prefecture_name %}
-                    <h3 class="spot">{{ spot.name }}</h3>
-                    {% endfor %}
-                    {% endif %}
-                    <a href="categories.view">
-                        <img class="message_home" src="../../static/img/home.png" alt="ホーム" />
-                    </a>
-                    <img class="logo" src="../../static/img/logo.png"/>
-                </header>
-                <div class="room">
-                    {% if messages|length > 0 %}
-                    {% for message in messages %}
-                    {% if message.uid == uid %}
+            <header class="auth-header">
+                <a class="back" href="{{ url_for('spots_view', pid=spot.pid) }}">＜</a>
+                <h3 class="spot">{{ spot.spot_name }}</h3>
+                <a href="{{ url_for('categories_view') }}">
+                    <img class="message_home" src="../../static/img/home.png" alt="ホーム" />
+                </a>
+                <img class="logo" src="../../static/img/logo.png"/>
+            </header>
+            <div class="room">
+                {% if messages|length > 0 %}
                     <ul>
-                        <li class="chat you">
-                            <!-- 相手のメッセージにはclass「you」をつける -->
-                            <p class="user-name">{{ message.name }}</p> 
-                            <p class="message">{{ message.message }}</p>
-                            <div class="time_stamp">17:00</div>
-                        </li>
-                        <li class="chat me">
-                            <!-- 自分のメッセージにはclass「me」をつける -->
-                            <p class="message">{{ message.message }}</p>
-                            <div class="time_stamp">既読<br>
-                            17:05</div> 
-                        </li>
-                        <li class="chat you">
-                            <P class="message">相手のメッセージ相手のメッセージ相手のメッセージ相手のメッセージ相手のメッセージ</P>
-                            <div class="time_stamp">17:10</div>
-                        </li>
-                        <li class="chat me">
-                            <p class="message">自分のメッセージ自分のメッセージ自分のメッセージ自分のメッセージ自分のメッセージ</p>
-                            <div class="time_stamp">既読<br>
-                            17:15</div>
-                        </li>
-                        <li class="chat me">
-                            <p class="message">自分のメッセージ自分のメッセージ</p>
-                            <div class="time_stamp">既読<br>
-                            17:16</div>
-                        </li>
+                        {% for message in messages %}
+                            <li class="chat {% if message.uid == uid %}me{% else %}you{% endif %}">
+                                {% if message.uid != uid %}
+                                    <p class="user-name">{{ message.name }}</p> 
+                                {% endif %}
+                                <p class="message">{{ message.message }}</p>
+                                <div class="time_stamp">{{ message.created_at }}</div>
+                            </li>
+                        {% endfor %}
                     </ul>
-                    {{% endfor %}}
-                    {{% endif %}}
-                    <div class="message_bar">
-                        <form class="message_box" method="post">
-                            <textarea name="message" autofocus></textarea>
-                            <input type="hidden" name="sid" value="{{ spot.id }}" />
-                            <button type="submit" class="send_button">送信＞</button>
-                        </form>
-                    </div>
+                {% else %}
+                    <p>まだメッセージがありません。</p>
+                {% endif %}
+                <div class="message_bar">
+                    <form class="message_box" method="post" action="{{ url_for('create_message', sid=spot.id) }}">
+                        <textarea name="message" autofocus placeholder="メッセージを入力してください"></textarea>
+                        <button type="submit" class="send_button">送信＞</button>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
-    </body>
-</html>
 {% endblock %}
